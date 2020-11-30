@@ -8,10 +8,21 @@ class LoginController = _LoginControllerBase with _$LoginController;
 
 abstract class _LoginControllerBase with Store {
   @observable
-  int value = 0;
+  String email = "";
+
+  @observable
+  String password = "";
+
+  @computed
+  String get validateEmail => email.contains("@") ? null : "Email invalido";
+
+  @computed
+  String get validatePassword =>
+      password.length > 6 ? null : "Senha deve conter no minimo 6 caracteres";
 
   @action
-  void increment() {
-    value++;
-  }
+  void saveEmail(value) => email = value;
+
+  @action
+  void savePassword(value) => password = value;
 }
