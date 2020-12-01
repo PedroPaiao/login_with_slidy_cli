@@ -1,3 +1,4 @@
+import 'widgets/form_login/form_login_controller.dart';
 import 'login_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -5,7 +6,7 @@ import 'login_page.dart';
 
 class LoginModule extends ChildModule {
   @override
-  List<Bind> get binds => [
+  List<Bind> get binds => [$FormLoginController,
         $LoginController,
       ];
 

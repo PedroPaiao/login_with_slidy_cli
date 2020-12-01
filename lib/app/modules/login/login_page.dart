@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:login_auth_slidy/app/modules/login/widgets/form_login/form_login_widget.dart';
 import 'login_controller.dart';
+import 'login_state.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -25,23 +27,22 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            FormLoginWidget(onPressed: () {
+              controller.login();
+            }),
             Observer(
-              builder: (_) => TextField(
-                onChanged: controller.saveEmail,
-                decoration: InputDecoration(
-                    hintText: "Email", errorText: controller.validateEmail),
-              ),
-            ),
-            Observer(
-              builder: (_) => TextField(
-                onChanged: controller.savePassword,
-                decoration: InputDecoration(
-                    hintText: "Password",
-                    errorText: controller.validatePassword),
-              ),
-            ),
-            SizedBox(height: 26),
-            RaisedButton(onPressed: () {}, child: Text("Entrar"))
+              builder: (_) {
+                if (controller.state is None) {
+                  return Container();
+                } else if (controller.state is Loading) {
+                  return CircularProgressIndicator();
+                } else if (controller.state is Success) {
+                  return Text("Bem-vindo ao App");
+                } else {
+                  return Text("Email e/ou senha invalido(s).");
+                }
+              },
+            )
           ],
         ),
       ),

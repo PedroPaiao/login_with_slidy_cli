@@ -19,58 +19,32 @@ final $LoginController = BindInject(
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$LoginController on _LoginControllerBase, Store {
-  Computed<String> _$validateEmailComputed;
+  final _$stateAtom = Atom(name: '_LoginControllerBase.state');
 
   @override
-  String get validateEmail =>
-      (_$validateEmailComputed ??= Computed<String>(() => super.validateEmail,
-              name: '_LoginControllerBase.validateEmail'))
-          .value;
-  Computed<String> _$validatePasswordComputed;
-
-  @override
-  String get validatePassword => (_$validatePasswordComputed ??=
-          Computed<String>(() => super.validatePassword,
-              name: '_LoginControllerBase.validatePassword'))
-      .value;
-
-  final _$emailAtom = Atom(name: '_LoginControllerBase.email');
-
-  @override
-  String get email {
-    _$emailAtom.reportRead();
-    return super.email;
+  LoginState get state {
+    _$stateAtom.reportRead();
+    return super.state;
   }
 
   @override
-  set email(String value) {
-    _$emailAtom.reportWrite(value, super.email, () {
-      super.email = value;
+  set state(LoginState value) {
+    _$stateAtom.reportWrite(value, super.state, () {
+      super.state = value;
     });
   }
 
-  final _$passwordAtom = Atom(name: '_LoginControllerBase.password');
+  final _$loginAsyncAction = AsyncAction('_LoginControllerBase.login');
 
   @override
-  String get password {
-    _$passwordAtom.reportRead();
-    return super.password;
-  }
-
-  @override
-  set password(String value) {
-    _$passwordAtom.reportWrite(value, super.password, () {
-      super.password = value;
-    });
+  Future<void> login() {
+    return _$loginAsyncAction.run(() => super.login());
   }
 
   @override
   String toString() {
     return '''
-email: ${email},
-password: ${password},
-validateEmail: ${validateEmail},
-validatePassword: ${validatePassword}
+state: ${state}
     ''';
   }
 }
